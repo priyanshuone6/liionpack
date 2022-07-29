@@ -444,7 +444,13 @@ class GenericManager:
             vlims_ok = False
         if np.any(temp_v > self.v_cut_higher):
             lp.logger.warning("High voltage limit reached")
-            vlims_ok = False
+            # vlims_ok = False
+
+            idx = np.where(temp_v > self.v_cut_higher)[0]
+            for i in idx:
+                # i = 0
+                self.netlist.loc[self.netlist['desc'] == f'Rc{i}', 'value'] = 20
+
         # 07 Step the electrochemical system
         self.step_actors()
         return vlims_ok

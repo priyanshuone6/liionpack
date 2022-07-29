@@ -9,13 +9,14 @@ import numpy as np
 # Define parameters
 Np = 3
 Ns = 1
-Iapp = 5
+# Iapp = 5
+Iapp = 16
 
 # Generate the netlist
 netlist = lp.setup_circuit(Np=Np, Ns=Ns, I=Iapp)
 
 # Change Rc0 branch resistance to bypass cell
-netlist.at[2, 'value'] = 10
+# netlist.at[2, 'value'] = 10
 
 # Define additional output variables
 output_variables = ['Volume-averaged cell temperature [K]']
