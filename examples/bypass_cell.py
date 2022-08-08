@@ -1,5 +1,8 @@
 """
-Draw and display a circuit using liionpack.
+Draw and display a circuit for a small pack. Apply a large current to exceed
+upper voltage limit such that Rc resistance is increased to bypass a
+particular cell. See lines 450-458 in solver.py for voltage check near upper
+limit and increase Rc value.
 """
 
 import liionpack as lp
@@ -10,13 +13,13 @@ import numpy as np
 Np = 3
 Ns = 1
 # Iapp = 5
-Iapp = 16
+Iapp = 13
 
 # Generate the netlist
 netlist = lp.setup_circuit(Np=Np, Ns=Ns, I=Iapp)
 
 # Change Rc0 branch resistance to bypass cell
-# netlist.at[2, 'value'] = 10
+# netlist.at[2, 'value'] = 20
 
 # Define additional output variables
 output_variables = ['Volume-averaged cell temperature [K]']
