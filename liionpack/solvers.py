@@ -456,6 +456,22 @@ class GenericManager:
 
             for i in idx:
                 self.netlist.loc[self.netlist['desc'] == f'Rc{i}', 'value'] = 20
+        else:
+            for i in range(self.Nspm):
+                self.netlist.loc[self.netlist['desc'] == f'Rc{i}', 'value'] = 1e-2
+
+        # If cell voltage is near lower limit then bypass that cell by
+        # increasing Rc resistance.
+        if np.any(temp_v < self.v_cut_lower + 0.1):
+            lp.logger.warning('Near lower voltage limit')
+
+            idx = np.where(temp_v < self.v_cut_lower + 0.1)[0]
+
+            for i in idx:
+                self.netlist.loc[self.netlist['desc'] == f'Rc{i}', 'value'] = 20
+        else:
+            for i in range(self.Nspm):
+                self.netlist.loc[self.netlist['desc'] == f'Rc{i}', 'value'] = 1e-2
 
         # 07 Step the electrochemical system
         self.step_actors()
