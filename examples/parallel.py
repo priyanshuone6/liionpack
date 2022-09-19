@@ -1,5 +1,7 @@
 """
-Compare a generated netlist to a loaded netlist that was created with LTspice.
+Compare a generated netlist circuit to a LTspice netlist circuit. Dataframes
+from the two approaches should be similar. Voltage and current results should
+be the same for the two netlist approaches.
 """
 
 import liionpack as lp
@@ -30,8 +32,8 @@ print(netlist2)
 # Compare voltage and current results
 print(f'V match: {np.allclose(np.sort(volt), np.sort(volt2))}')
 print(f'I match: {np.allclose(np.sort(curr), np.sort(curr2))}')
-breakpoint()
 
-# Plot the circuit
+# Plot the circuit using netlist from setup_circuit
+# The netlist from LTspice is not compatible with draw_circuit
 lp.draw_circuit(netlist, node_spacing=2.5)
 lp.show_plots()

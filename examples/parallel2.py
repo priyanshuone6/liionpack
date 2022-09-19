@@ -1,5 +1,6 @@
 """
-Try different approaches to generating a netlist then run the simulation.
+Load a LTspice netlist circuit that contains a parallel shunt resistor Rs for
+each battery cell then run the simulation.
 """
 
 import liionpack as lp
