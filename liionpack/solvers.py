@@ -442,9 +442,37 @@ class GenericManager:
         if np.any(temp_v < self.v_cut_lower):
             lp.logger.warning("Low voltage limit reached")
             vlims_ok = False
+
         if np.any(temp_v > self.v_cut_higher):
             lp.logger.warning("High voltage limit reached")
             vlims_ok = False
+
+        # If cell voltage is near upper limit then bypass that cell by
+        # increasing Rs resistance.
+        if np.any(temp_v > self.v_cut_higher - 0.1):
+            lp.logger.warning('Near upper voltage limit')
+
+            idx = np.where(temp_v > self.v_cut_higher - 0.1)[0]
+
+            for i in idx:
+                self.netlist.loc[self.netlist['desc'] == f'Rs{i}', 'value'] = 20
+        else:
+            for i in range(self.Nspm):
+                self.netlist.loc[self.netlist['desc'] == f'Rs{i}', 'value'] = 1
+
+        # If cell voltage is near lower limit then bypass that cell by
+        # increasing Rs resistance.
+        if np.any(temp_v < self.v_cut_lower + 0.1):
+            lp.logger.warning('Near lower voltage limit')
+
+            idx = np.where(temp_v < self.v_cut_lower + 0.1)[0]
+
+            for i in idx:
+                self.netlist.loc[self.netlist['desc'] == f'Rs{i}', 'value'] = 20
+        else:
+            for i in range(self.Nspm):
+                self.netlist.loc[self.netlist['desc'] == f'Rs{i}', 'value'] = 1
+
         # 07 Step the electrochemical system
         self.step_actors()
         return vlims_ok
